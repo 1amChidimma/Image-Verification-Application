@@ -3,9 +3,12 @@ package com.chidimma.image_verification_system.controller;
 import com.chidimma.image_verification_system.dto.*;
 import com.chidimma.image_verification_system.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 
 @RestController
@@ -15,45 +18,61 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<UserResponse> signup(
-            @ModelAttribute SignupRequest signupRequest,
-            @RequestParam("faceImage")MultipartFile faceImage){
-        try{
-            UserResponse response = authService.signup(signupRequest, faceImage);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+
+    @PostMapping("/signup1")
+    public ResponseEntity<UserResponse> signup1(
+            @RequestBody SignupRequest signupRequest) {
+        UserResponse response = authService.signupUserOnly(signupRequest);
+        return ResponseEntity.ok(response);
     }
 
+    /*@PostMapping("/signup2")
+    public ResponseEntity<?> signup2(
+            @RequestParam("email") String email,
+            @RequestParam("faceImage") MultipartFile faceImage) {
+        try {
+            UserResponse response = authService.saveUserFaceImage(email, faceImage);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }*/
+
+    @PostMapping("/kyc")
+    public ResponseEntity<?> uploadKycImage(@RequestBody KycRequest request) {
+        authService.submitKyc(request);
+        return ResponseEntity.ok("KYC image saved.");
+    }
+
+
     @PostMapping("/login1")
-    public boolean login1(
+    public ResponseEntity<DashboardResponse> login1(
             @RequestBody LoginRequest loginRequest){
 
-        try{
-            boolean response = authService.login1(loginRequest);
-            return response;
-        }catch (Exception e){
+        try {
+            DashboardResponse response = authService.login1(loginRequest);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
 
     @PostMapping("/login2")
-    public ResponseEntity<UserResponse> login2(
-            @ModelAttribute LoginRequest loginRequest,
-            @RequestParam("faceImage") MultipartFile faceImage) {
-        System.out.println("Username: " + loginRequest.getUserName());
-        System.out.println("Image file: " + faceImage.getOriginalFilename());
+    public ResponseEntity<UserResponse> login2(@RequestBody FaceLoginRequest faceLoginRequest) {
 
         try {
-            UserResponse response = authService.login2(loginRequest, faceImage);
+            UserResponse response = authService.login2(faceLoginRequest);
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-           }
+        } catch (Exception e) {e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null); // or return an error message if using a wrapper
+        }
     }
+
+
 
     @PostMapping("/generate-email-otp")
     public ResponseEntity<GenerateEmailOtpResponse> generateEmailOtp(

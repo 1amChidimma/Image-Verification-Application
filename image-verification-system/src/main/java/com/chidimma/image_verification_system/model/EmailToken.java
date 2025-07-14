@@ -17,7 +17,9 @@ public class EmailToken {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String token;
 

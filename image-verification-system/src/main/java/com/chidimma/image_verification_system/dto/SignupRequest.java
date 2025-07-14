@@ -5,15 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 /** Carries all data needed to register a new user, including the uploaded face image*/
 @Getter
 @Setter
 @NoArgsConstructor
 public class SignupRequest {
-    private String userName;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
     private String password;
-    private MultipartFile faceImage;
+    private LocalDate dob;
+    private String phone;
 }

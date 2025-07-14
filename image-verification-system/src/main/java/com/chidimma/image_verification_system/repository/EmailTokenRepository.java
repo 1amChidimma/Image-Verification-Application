@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface EmailTokenRepository extends JpaRepository<EmailToken, Long> {
 
-    Optional<EmailToken> findTopByEmailAndUsedFalseOrderByCreatedAtDesc (String email);
+    Optional<EmailToken> findTopByUserEmailAndUsedFalseOrderByCreatedAtDesc(String email);
+
 
 }

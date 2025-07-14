@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDate;
 
 
@@ -11,12 +12,13 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class DashboardResponse {
 
     private String name;
     private String email;
     private String phone;
     private LocalDate dob;
+    private String imageUrl;
 
 
 }
