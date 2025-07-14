@@ -71,7 +71,7 @@ public class AuthService {
 
 
         User savedUser = userRepository.save(user);
-        
+
 
         return new UserResponse(
                 savedUser.getUserName(), // maps to `name` in response
