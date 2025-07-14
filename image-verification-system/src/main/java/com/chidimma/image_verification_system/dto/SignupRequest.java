@@ -1,6 +1,6 @@
 package com.chidimma.image_verification_system.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
